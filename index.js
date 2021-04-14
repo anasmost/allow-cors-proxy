@@ -4,7 +4,7 @@ const http = require('http');
 const app = express();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://anasmost.github.io/quote-generator/');
+  res.header('Access-Control-Allow-Origin', 'https://anasmost.github.io');
   next();
 });
 
