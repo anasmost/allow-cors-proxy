@@ -1,5 +1,5 @@
 const express = require('express');
-const request = require('request');
+const http = require('http');
 
 const app = express();
 
@@ -9,16 +9,18 @@ app.use((req, res, next) => {
 });
 
 app.get('/:url', (req, res) => {
-  request(
-    { url },
-    (error, response, body) => {
-      if (error || response.statusCode !== 200) {
-        return res.status(500).json({ type: 'error', message: err.message });
+  http
+    .request(
+      req.params.url,
+      (response) => {
+        let data = '';
+        response.on('data', chunk => { data += chunk; });
+        response.on('end', () => {
+          res.send(data);
+        });
       }
-
-      res.json(JSON.parse(body));
-    }
-  );
+    )
+    .end();
 });
 
 const PORT = process.env.PORT || 3000;
